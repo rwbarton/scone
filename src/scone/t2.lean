@@ -36,3 +36,10 @@ def T₂ : A :=
 
 -- TODO: By a similar process, prove
 -- def edge_T₂ : edge_ctx_tm unit_edge_ctx edge_A (λ _, T₂) := sorry
+
+variables {X Y : Type} (τX : (X → Prop) → Prop) (τY : (Y → Prop) → Prop)
+variables (e : X ≃ Y) (he : ∀ (s : set X), τX s ↔ τY (e.symm ⁻¹' s))
+variables {F : A} (hF : edge_ctx_tm unit_edge_ctx edge_A (λ _, F))
+include he hF
+
+-- lemma invariant : F X τX ↔ F Y τY := sorry
