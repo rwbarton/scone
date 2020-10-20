@@ -39,7 +39,29 @@ def T₂ : A :=
 
 variables {X Y : Type} (τX : (X → Prop) → Prop) (τY : (Y → Prop) → Prop)
 variables (e : X ≃ Y) (he : ∀ (s : set X), τX s ↔ τY (e.symm ⁻¹' s))
-variables {F : A} (hF : edge_ctx_tm unit_edge_ctx edge_A (λ _, F))
+variables {F : A} (hF : edge_ctx_tm unit_edge_ctx edge_A.{0 0} (λ _, F))
 include he hF
 
--- lemma invariant : F X τX ↔ F Y τY := sorry
+lemma invariant : F X τX ↔ F Y τY :=
+begin
+  have := hF.e ⟨rfl⟩,
+  swap, exact (), swap, exact (), swap, exact (),
+  specialize this X Y (discrete_edge_ctx_ty _) (discrete_edge_ctx_ty _),
+  specialize this ⟨e, λ x, equiv.refl _, _⟩,
+  swap,
+  { rintros x₀ x₁ ⟨⟩ ⟨⟩,
+    -- need to check that the function `e` "preserves edges",
+    -- which is automatic because `X` is discrete
+    change plift (_ =[rfl] _) ≃ plift (_ =[rfl] _),
+    sorry },
+  specialize this τX τY,
+  -- next we need a proof that τX "preserves edges",
+  -- which is automatic because `X → Prop` is discrete,
+  -- and the same for τY
+  specialize this sorry sorry,
+  -- now we need to use the compatibility of `e` and `τX`, `τY` somehow
+  specialize this sorry,
+  -- eliminate a `plift`
+  cases this with h,
+  exact h
+end
