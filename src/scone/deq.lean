@@ -29,8 +29,5 @@ begin
   refl
 end
 
-/-
-inductive ddeq {α : Sort*} {C : α → Sort*} {D : Π (a : α), C a → Sort*} :
-  Π {a a' : α} {e : a = a'} {x : C a} {x' : C a'} (f : x =[e] x') (y : D a x) (y' : D a' x'), Prop
-| refl {a : α} {x : C a} (y : D a x) : ddeq (deq.refl x) y y
--/
+lemma deq_iff_eq {a : α} {x y : C a} : x =[eq.refl a] y ↔ x = y :=
+by split; rintro ⟨⟩; refl
